@@ -1,11 +1,192 @@
 {
   "network": "bscTestnet",
   "chainId": 97,
-  "deployedAt": null,
-  "deployBlock": 0,
-  "roles": null,
-  "stable": "0x0000000000000000000000000000000000000000",
-  "registry": "0x0000000000000000000000000000000000000000",
-  "vault": "0x0000000000000000000000000000000000000000",
-  "funds": []
+  "deployedAt": "2026-11-26T14:22:56.816Z",
+  "deployBlock": 144994814,
+  "explorer": "https://testnet.bscscan.com",
+  "roles": {
+    "deployer": "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+    "manager": "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+    "trustee": "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+    "feeRecipient": "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+    "feeBps": 25
+  },
+  "stable": "0x2644B6647d31675FCA9de0A980aCE6fa933327A8",
+  "registry": "0xD0D8F0A816a5f122a1ECe1E28F95cB4009ba4A0F",
+  "vault": "0x950bb201764561b07278a49c80eF929b416F1596",
+  "funds": [
+    {
+      "key": "shariah-income",
+      "name": "Shariah Income Fund",
+      "symbol": "SIF",
+      "navE18": "1.0250",
+      "market": "Malaysia",
+      "ccy": "USD (testnet)",
+      "share": "0x19A2989bE47b6223eDdeecc9F25028f42394e459",
+      "oracle": "0x6AF1cb2886714a264eD5AFfE586f929D3527BF54",
+      "router": "0x02dD721dE1dE1e77176F9E8E83aD806Ee9D06477"
+    },
+    {
+      "key": "money-market",
+      "name": "Money Market Fund",
+      "symbol": "MMF",
+      "navE18": "1.0000",
+      "market": "Malaysia",
+      "ccy": "USD (testnet)",
+      "share": "0x017204B1A6F28B240963cbff8a0588dD0ffF0b04",
+      "oracle": "0xC4A924B4102874FFF9de67aEF350373498A9Dc03",
+      "router": "0x694BfEa5451D84383a5e87D6C1543410C551B6fb"
+    },
+    {
+      "key": "govt-bond",
+      "name": "Government Bond Fund",
+      "symbol": "GBF",
+      "navE18": "0.9850",
+      "market": "Indonesia",
+      "ccy": "USD (testnet)",
+      "share": "0xE22C18f078D54a7Ea426968a445Da0e557d3b554",
+      "oracle": "0x4E4aB1DE6694261c5f122b008406F64762Cc1E1A",
+      "router": "0x2df7A9cF0aCCCCf51caa50b4B5664C1895139220"
+    }
+  ],
+  "verify": [
+    {
+      "name": "MockUSDT",
+      "contract": "contracts/MockUSDT.sol:MockUSDT",
+      "address": "0x2644B6647d31675FCA9de0A980aCE6fa933327A8",
+      "args": [
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3"
+      ]
+    },
+    {
+      "name": "InvestorRegistry",
+      "contract": "contracts/InvestorRegistry.sol:InvestorRegistry",
+      "address": "0xD0D8F0A816a5f122a1ECe1E28F95cB4009ba4A0F",
+      "args": [
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        true
+      ]
+    },
+    {
+      "name": "FundShare shariah-income",
+      "contract": "contracts/FundShare.sol:FundShare",
+      "address": "0x19A2989bE47b6223eDdeecc9F25028f42394e459",
+      "args": [
+        "Shariah Income Fund",
+        "SIF",
+        "0xD0D8F0A816a5f122a1ECe1E28F95cB4009ba4A0F",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3"
+      ]
+    },
+    {
+      "name": "NavOracle shariah-income",
+      "contract": "contracts/NavOracle.sol:NavOracle",
+      "address": "0x6AF1cb2886714a264eD5AFfE586f929D3527BF54",
+      "args": [
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        604800,
+        500
+      ]
+    },
+    {
+      "name": "SubscriptionRouter shariah-income",
+      "contract": "contracts/SubscriptionRouter.sol:SubscriptionRouter",
+      "address": "0x02dD721dE1dE1e77176F9E8E83aD806Ee9D06477",
+      "args": [
+        "0x2644B6647d31675FCA9de0A980aCE6fa933327A8",
+        "0x19A2989bE47b6223eDdeecc9F25028f42394e459",
+        "0x6AF1cb2886714a264eD5AFfE586f929D3527BF54",
+        "0xD0D8F0A816a5f122a1ECe1E28F95cB4009ba4A0F",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        25,
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3"
+      ]
+    },
+    {
+      "name": "FundShare money-market",
+      "contract": "contracts/FundShare.sol:FundShare",
+      "address": "0x017204B1A6F28B240963cbff8a0588dD0ffF0b04",
+      "args": [
+        "Money Market Fund",
+        "MMF",
+        "0xD0D8F0A816a5f122a1ECe1E28F95cB4009ba4A0F",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3"
+      ]
+    },
+    {
+      "name": "NavOracle money-market",
+      "contract": "contracts/NavOracle.sol:NavOracle",
+      "address": "0xC4A924B4102874FFF9de67aEF350373498A9Dc03",
+      "args": [
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        604800,
+        500
+      ]
+    },
+    {
+      "name": "SubscriptionRouter money-market",
+      "contract": "contracts/SubscriptionRouter.sol:SubscriptionRouter",
+      "address": "0x694BfEa5451D84383a5e87D6C1543410C551B6fb",
+      "args": [
+        "0x2644B6647d31675FCA9de0A980aCE6fa933327A8",
+        "0x017204B1A6F28B240963cbff8a0588dD0ffF0b04",
+        "0xC4A924B4102874FFF9de67aEF350373498A9Dc03",
+        "0xD0D8F0A816a5f122a1ECe1E28F95cB4009ba4A0F",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        25,
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3"
+      ]
+    },
+    {
+      "name": "FundShare govt-bond",
+      "contract": "contracts/FundShare.sol:FundShare",
+      "address": "0xE22C18f078D54a7Ea426968a445Da0e557d3b554",
+      "args": [
+        "Government Bond Fund",
+        "GBF",
+        "0xD0D8F0A816a5f122a1ECe1E28F95cB4009ba4A0F",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3"
+      ]
+    },
+    {
+      "name": "NavOracle govt-bond",
+      "contract": "contracts/NavOracle.sol:NavOracle",
+      "address": "0x4E4aB1DE6694261c5f122b008406F64762Cc1E1A",
+      "args": [
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        604800,
+        500
+      ]
+    },
+    {
+      "name": "SubscriptionRouter govt-bond",
+      "contract": "contracts/SubscriptionRouter.sol:SubscriptionRouter",
+      "address": "0x2df7A9cF0aCCCCf51caa50b4B5664C1895139220",
+      "args": [
+        "0x2644B6647d31675FCA9de0A980aCE6fa933327A8",
+        "0xE22C18f078D54a7Ea426968a445Da0e557d3b554",
+        "0x4E4aB1DE6694261c5f122b008406F64762Cc1E1A",
+        "0xD0D8F0A816a5f122a1ECe1E28F95cB4009ba4A0F",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        25,
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3"
+      ]
+    },
+    {
+      "name": "StableVault",
+      "contract": "contracts/StableVault.sol:StableVault",
+      "address": "0x950bb201764561b07278a49c80eF929b416F1596",
+      "args": [
+        "0x2644B6647d31675FCA9de0A980aCE6fa933327A8",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3",
+        "0xD97da366c3E7825C2dCbC8d30e294be4817d99D3"
+      ]
+    }
+  ]
 }
