@@ -112,7 +112,7 @@ h3 { font-size: 20px; letter-spacing: -0.4px; }
 .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line); }
 @media (max-width: 1000px) { .cards { grid-template-columns: 1fr; } }
 .card { padding: 20px; background: var(--panel); display: flex; flex-direction: column; gap: 10px; border-right: 1px solid var(--line); transition: background 0.15s; }
-.card:last-child { border-right: 0; }
+
 a.card:hover { background: #fbfaf8; }
 .apy { font-family: var(--display); font-weight: 500; font-size: 30px; letter-spacing: -0.6px; font-variant-numeric: tabular-nums; }
 
@@ -186,3 +186,50 @@ details.faq p { color: var(--muted); line-height: 1.65; margin: 12px 0 0; max-wi
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .rise { animation: rise 0.5s ease both; }
 @media (prefers-reduced-motion: reduce) { .skeleton, .rise { animation: none; } }
+
+/* ---------- Live strip and 6-up grids ---------- */
+.strip { display: flex; align-items: center; gap: 0; border: 1px solid var(--line); background: var(--panel); overflow-x: auto; }
+.strip .live-dot { width: 8px; height: 8px; border-radius: 99px; background: #16a34a; margin: 0 6px 0 18px; flex: none; box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.5); animation: pulse 2s infinite; }
+.strip-cell { display: flex; align-items: baseline; gap: 8px; padding: 12px 18px; border-right: 1px solid var(--line); white-space: nowrap; }
+.strip-cell:last-child { border-right: 0; }
+.strip-cell .num { font-size: 15px; }
+.up { color: var(--green); }
+.down { color: var(--red); }
+@keyframes pulse { 70% { box-shadow: 0 0 0 7px rgba(22, 163, 74, 0); } 100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); } }
+.cards > .card { border-bottom: 1px solid var(--line); }
+.cards > .card:nth-child(3n) { border-right: 0; }
+.cards > .card:nth-last-child(-n + 3) { border-bottom: 0; }
+.ticker > *:nth-child(3n) { border-right: 0; }
+.ticker > *:nth-child(n + 4) { border-top: 1px solid var(--line); }
+@media (prefers-reduced-motion: reduce) { .strip .live-dot { animation: none; } }
+
+/* ---------- Preview themes (opt-in via <html data-theme>) ----------
+   "splash": Splash Finance's deep teal-green, cream ground and warm gold, in the same editorial system. */
+[data-theme="splash"] {
+  --ground: #f7f4ec;
+  --ground-2: #ece7da;
+  --cream: #fffaf1;
+  --ink: #0a2328;
+  --ink-2: #29434a;
+  --muted: #5f7175;
+  --line: #e2ddd0;
+  --line-strong: #cbc5b6;
+  --primary: #0d6370;
+  --primary-hover: #083640;
+  --primary-soft: #e2efed;
+  --gold: #efc46f;
+  --gold-soft: #fbf0d6;
+  --lift: 0 30px 60px -30px rgba(8, 54, 64, 0.28);
+}
+[data-theme="splash"] .panel.blue { background: #083640; border-color: #083640; }
+[data-theme="emerald"] {
+  --ground: #f4f4f0;
+  --ground-2: #e8e9e2;
+  --ink: #0f1a16;
+  --muted: #627069;
+  --primary: #0e7a55;
+  --primary-hover: #0a5c40;
+  --primary-soft: #e1f1ea;
+  --lift: 0 30px 60px -30px rgba(10, 60, 40, 0.25);
+}
+[data-theme="emerald"] .panel.blue { background: #0a3d2c; border-color: #0a3d2c; }

@@ -1,19 +1,8 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import type { MarketYield } from "@/lib/yields";
 import { ago, fmtPct, fmtUsdCompact } from "@/lib/format";
+import { useYields as useMarkets } from "@/lib/live";
 
-export function useMarkets() {
-  return useQuery({
-    queryKey: ["markets"],
-    queryFn: async () => {
-      const r = await fetch("/api/yields");
-      if (!r.ok) throw new Error(`yields ${r.status}`);
-      return (await r.json()) as { fetchedAt: string; markets: MarketYield[] };
-    },
-    refetchInterval: 5 * 60_000,
-  });
-}
+export { useYields as useMarkets } from "@/lib/live";
 
 export function LiveMarkets({ title = "Live mainnet markets" }: { title?: string }) {
   const { data, isLoading, isError } = useMarkets();
@@ -28,7 +17,7 @@ export function LiveMarkets({ title = "Live mainnet markets" }: { title?: string
       </div>
       {isError && <div className="notice err">Could not load live rates. They will retry automatically.</div>}
       <div className="cards">
-        {(data?.markets ?? Array.from({ length: 3 }, () => null)).map((m, i) =>
+        {(data?.markets ?? Array.from({ length: 6 }, () => null)).map((m, i) =>
           m ? (
             <a key={m.id} className="card" href={m.url} target="_blank" rel="noreferrer" aria-label={`${m.protocol} ${m.asset} on DefiLlama`}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>

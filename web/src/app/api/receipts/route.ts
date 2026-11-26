@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { createPublicClient, http, isAddress, parseAbiItem, type Address } from "viem";
+import { createPublicClient, fallback, http, isAddress, parseAbiItem, type Address } from "viem";
 import { bscTestnet } from "viem/chains";
 import { deployment, isDeployed } from "@/lib/deployment";
+import { BSC_TESTNET_RPCS } from "@/lib/wagmi";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,7 @@ const EVENTS = {
 
 export type Receipt = { kind: string; product: string; txHash: string; blockNumber: string; amount: string; detail: string };
 
-const client = createPublicClient({ chain: bscTestnet, transport: http(process.env.NEXT_PUBLIC_BSC_TESTNET_RPC) });
+const client = createPublicClient({ chain: bscTestnet, transport: fallback(BSC_TESTNET_RPCS.map((u) => http(u))) });
 const CHUNK = 5_000n; // public BSC testnet RPCs cap eth_getLogs ranges
 const MAX_CHUNKS = 40n; // ~200k blocks, about a day at 0.45s blocks
 

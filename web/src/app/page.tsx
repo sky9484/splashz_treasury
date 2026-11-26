@@ -3,6 +3,7 @@ import { Wordmark } from "@/components/Logo";
 import { Arrow } from "@/components/Arrow";
 import { HeroCard } from "@/components/landing/HeroCard";
 import { LiveTicker } from "@/components/landing/LiveTicker";
+import { LiveStrip } from "@/components/LiveStrip";
 
 function LaunchApp({ big = false }: { big?: boolean }) {
   return (
@@ -23,13 +24,13 @@ const PRODUCTS = [
     tag: ["Testnet live", "green"],
     title: "Stablecoin vaults",
     body: "Stable yield from the biggest lending markets on BNB Chain and Ethereum, in a vault you can leave any time.",
-    points: ["Live Venus and Aave rates", "ERC-4626 shares in your wallet", "Rate source recorded on-chain"],
+    points: ["Live Venus, Lista and Aave rates", "ERC-4626 shares in your wallet", "Rate source recorded on-chain"],
   },
   {
     tag: ["Preview", "amber"],
     title: "Tokenized stocks",
-    body: "US stocks priced live by Pyth. Orders go to a licensed tokenizer partner once that partnership is signed.",
-    points: ["Live prices, market hours shown", "Buy with USDT", "Trading opens with the partner"],
+    body: "Tokenized US stocks with live 24/7 on-chain prices. Orders go to a licensed tokenizer partner once that partnership is signed.",
+    points: ["Live prices, 24/7", "Buy with USDT", "Trading opens with the partner"],
   },
 ] as const;
 
@@ -87,7 +88,8 @@ export default function Landing() {
             </a>
           </div>
           <HeroCard />
-          <div className="eyebrow grey" style={{ margin: "56px 0 12px" }}>Live supply rates · mainnet · DefiLlama</div>
+          <div style={{ marginTop: 40 }}><LiveStrip /></div>
+          <div className="eyebrow grey" style={{ margin: "40px 0 12px" }}>Live stablecoin supply rates · BNB Chain and Ethereum · DefiLlama</div>
         </div>
         <div style={{ borderBottom: "1px solid var(--line)" }}>
           <div className="wrap" style={{ padding: 0 }}>

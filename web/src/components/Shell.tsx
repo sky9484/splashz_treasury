@@ -8,6 +8,7 @@ import { DisclaimerGate } from "./DisclaimerGate";
 import { NetworkGuard } from "./NetworkGuard";
 import { WalletButton } from "./WalletButton";
 import { WalletGate } from "./WalletGate";
+import { LiveStrip } from "./LiveStrip";
 import { isDeployed } from "@/lib/deployment";
 import { useMounted } from "@/lib/useMounted";
 
@@ -51,6 +52,7 @@ export function Shell({ children }: { children: ReactNode }) {
               Contracts are not deployed yet. Run <span className="mono">npm run deploy:testnet</span> in <span className="mono">contracts/</span>. Live market data still works.
             </div>
           )}
+          <LiveStrip />
           <NetworkGuard />
           <WalletGate>{children}</WalletGate>
         </main>

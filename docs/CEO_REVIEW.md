@@ -18,7 +18,7 @@
 | D4 | Visual DNA | Stablecorp-style editorial system (sharp containers, long soft shadow, tracked pills) with Splashz cobalt and BNB gold; own layout | Approved by Sky (26 Nov) |
 | D5 | Fund NAV | Demo NAV signed by the deploy team, labelled “not real fund data” | Default; real NAV needs a manager agreement |
 | D6 | Vault yield | Mirrors live Venus USDT APY via keeper; testnet yield is minted | Default; disclosed in UI |
-| D7 | Stocks | Live Pyth prices, order button disabled | Default; tokenized stocks are securities |
+| D7 | Stocks | Live CoinGecko xStocks prices (Pyth needs a paid key), order button disabled | Default; tokenized stocks are securities |
 | D8 | Receipts | Read from chain events, chunked RPC scan (~1 day) | Default; Etherscan V2 indexing deferred |
 | D9 | Hosting | Sebastian publishes to earn.splashz.xyz, not Vercel | Approved by Sky |
 
@@ -34,7 +34,7 @@ Browser (MetaMask) ──sign──▶ SubscriptionRouter ──stable──▶ 
         │
         ├──sign──▶ StableVault (ERC-4626) ◀── keeper: DefiLlama APY + yield
         │
-Next.js server: /api/yields (DefiLlama) · /api/stocks (Pyth) · /api/receipts (RPC logs)
+Next.js server: /api/yields (DefiLlama) · /api/stocks + /api/market (CoinGecko), browser fallback for every feed · /api/receipts (RPC logs)
 ```
 
 Single points of failure: the manager key (NAV), the trustee key (settlement liquidity), the public RPC (receipts), DefiLlama (rates). Each one fails visibly; see the table below.
@@ -50,7 +50,7 @@ Single points of failure: the manager key (NAV), the trustee key (settlement liq
 | Trustee can't pay | Trustee short of funds or allowance | Settlement reverts; redemption stays Pending; investor can cancel | “Pending” + Cancel | Contract test ✔ |
 | Not eligible | New wallet | `NotEligible` revert; UI shows step 1 | “Confirm eligibility” | Contract test ✔ |
 | DefiLlama down | Network or API error | Route returns `unavailable` per market | “Unavailable”, never a number | Unit test ✔, live call not tested |
-| No Pyth key | Env missing | `no_key` status | Warning + dashes | Build ✔, live call not tested |
+| Price API down | CoinGecko unreachable or rate-limited | Server route, then browser direct, then `unavailable` | Dashes + warning | Fixture E2E ✔ |
 | RPC log-range limit | Public RPC caps `getLogs` | 5k-block chunks, 40 chunks | Receipts for about a day | Not tested (no RPC in sandbox) |
 | Wrong network | Wallet on another chain | NetworkGuard prompts a switch | Banner + “Switch network” | Not E2E-tested |
 | Wallet hangs on reconnect | Locked MetaMask | 1.5 s patience, then gate | Gate, not an endless skeleton | Browser test ✔ |

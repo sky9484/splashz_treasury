@@ -30,6 +30,15 @@ Environment: an isolated build sandbox. Only the npm registry was reachable. The
 3. **`/api/yields` was statically prerendered at build time.** A build without network access would have served “unavailable” for the first 5 minutes in production. Fixed by making the route dynamic, with caching on the fetch layer.
 4. **The gate could hang on the skeleton forever** if a wallet stalls during reconnect. Fixed by allowing 1.5 s, then showing the gate.
 
+## Live data verification (26 Nov, 15:20 Bangkok)
+
+Run in a real browser (Claude desktop browser pane), not the sandbox:
+- DefiLlama: all 6 pool ids return live data. Venus USDT 3.42%, Venus USDC 2.94%, Lista USD1 1.43%, Aave USDT BSC 2.26%, Aave USDC ETH 3.05%, Aave USDT ETH 3.07%. The earlier “unverified” Aave id is correct. Browser calls (CORS) are allowed.
+- CoinGecko: xStocks and BNB/USDT/USDC return prices updated within about 30 s. Browser calls are allowed.
+- Pyth Hermes: price calls refused without a key, so it was **replaced** by CoinGecko. Feed ids themselves were verified.
+- BSC testnet RPC: `data-seed-prebsc-1/2` **fail from browsers**; this would have broken every contract read in production. Switched to publicnode with drpc as fallback (both work).
+- End to end in headless Chrome, with server routes dead and those real values served at the public endpoints: live strip, 6 vault cards, hero card and stocks table all render; zero page errors.
+
 ## Not tested, and why
 
 | Not tested | Why | How to test after deploy |
@@ -37,8 +46,7 @@ Environment: an isolated build sandbox. Only the npm registry was reachable. The
 | Testnet deployment and BscScan verification | No RPC or keys in the sandbox; the agent never handles private keys | Sebastian runs `npm run deploy:testnet` |
 | Real MetaMask: connect, switch chain, sign | No extension in a headless sandbox | Manual run with MetaMask on chain 97 |
 | Subscribe / redeem / vault transactions from the UI | Needs deployed contracts and a wallet | Manual run of the demo script below |
-| Live DefiLlama rates, including the **unverified Aave pool id** | Network blocked | Open `/api/yields`; all three must be `"live"` |
-| Live Pyth prices | Network blocked, and it needs `PYTH_API_KEY` | Open `/api/stocks` |
+| Server-side DefiLlama / CoinGecko from the production host | Sandbox blocked; verified from a browser instead | Open `/api/yields` and `/api/stocks` on the host |
 | Receipts over real RPC (log range limits) | Network blocked | Do one subscribe, then check Portfolio → Receipts |
 | Keeper and post-nav scripts against testnet | Network blocked | Run each once after deploying |
 | Real fonts (Cabinet Grotesk / Satoshi) | Fontshare blocked; screenshots used fallback fonts | Visual check on earn.splashz.xyz |

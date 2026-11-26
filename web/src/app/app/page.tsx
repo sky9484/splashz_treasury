@@ -100,7 +100,7 @@ export default function EarnPage() {
       <section className="panel blue" style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ maxWidth: 640 }}>
           <h2 style={{ color: "#fff" }}>Tokenized stocks</h2>
-          <p style={{ margin: "6px 0 0", color: "rgba(255,255,255,0.78)", lineHeight: 1.6 }}>Live prices for US stocks, ready to buy with USDT once a licensed tokenizer partner is connected.</p>
+          <p style={{ margin: "6px 0 0", color: "rgba(255,255,255,0.78)", lineHeight: 1.6 }}>Live 24/7 prices for tokenized US stocks, ready to buy with USDT once a licensed tokenizer partner is connected.</p>
         </div>
         <Link href="/app/stocks" className="btn" style={{ background: "#fff", color: "var(--primary)" }}>Open Stocks</Link>
       </section>

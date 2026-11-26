@@ -28,7 +28,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     bscTestnet: {
-      url: process.env.BSC_TESTNET_RPC_URL || "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+      url: process.env.BSC_TESTNET_RPC_URL || "https://bsc-testnet-rpc.publicnode.com",
       chainId: 97,
       accounts: pk ? [pk] : [],
     },

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { fmtAmount, parseAmount, withSlippage, fmtPct, ago } from "./format";
 import { summarizeChart, MARKETS } from "./yields";
-import { parseHermes, EQUITIES } from "./stocks";
+import { parseStocks, parseAssets, STOCKS } from "./stocks";
 
 describe("format", () => {
   it("formats 18-decimal amounts without rounding up", () => {
@@ -44,14 +44,22 @@ describe("yields", () => {
   });
 });
 
-describe("stocks", () => {
-  it("scales Pyth prices by exponent and flags stale quotes", () => {
+describe("stocks and assets", () => {
+  it("maps CoinGecko rows to quotes and flags stale or missing ones", () => {
     const now = 1_800_000_000;
-    const body = { parsed: [{ id: EQUITIES[0].id.slice(2), price: { price: "23012345", conf: "1200", expo: -5, publish_time: now - 10 } }] };
-    const q = parseHermes(body, now);
-    expect(q[0].price).toBeCloseTo(230.12345);
-    expect(q[0].stale).toBe(false);
-    expect(q[1].price).toBeNull();
+    const body = {
+      [STOCKS[0].cg]: { usd: 356.07, usd_24h_change: 0.75, usd_market_cap: 13e6, last_updated_at: now - 24 },
+      [STOCKS[1].cg]: { usd: 150.5, last_updated_at: now - 7200 },
+      [STOCKS[2].cg]: { usd: "oops" },
+    };
+    const q = parseStocks(body, now);
+    expect(q[0]).toMatchObject({ ticker: "AAPL", price: 356.07, change24h: 0.75, stale: false });
     expect(q[1].stale).toBe(true);
+    expect(q[2].price).toBeNull();
+    expect(q[3].price).toBeNull();
+    expect(q).toHaveLength(STOCKS.length);
+  });
+  it("never invents a price when the body is empty", () => {
+    expect(parseAssets(null, 1).every((a) => a.price === null && a.stale)).toBe(true);
   });
 });

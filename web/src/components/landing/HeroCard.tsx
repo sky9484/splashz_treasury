@@ -46,7 +46,7 @@ export function HeroCard() {
         </div>
         <div style={{ padding: "22px 22px 26px" }}>
           <div className="eyebrow grey" style={{ marginBottom: 6 }}>Stablecoin vaults · live supply APY</div>
-          {(vaults.length ? vaults : [null, null, null]).map((m, i) => (
+          {(vaults.length ? vaults.slice(0, 4) : [null, null, null, null]).map((m, i) => (
             <div key={m?.id ?? i} className="kv">
               <span style={{ color: "var(--ink)" }}>{m ? `${m.protocol} ${m.asset}` : <span className="skeleton" />}</span>
               <span className="num">{m ? (m.status === "live" ? fmtPct(m.apy) : "—") : <span className="skeleton" style={{ width: 40 }} />}</span>

@@ -27,7 +27,7 @@ Do not show “Pay a supplier” anywhere.
 - `/app` is the dashboard. It is wallet-gated: until MetaMask is connected, show the “Your wallet is your account” gate and the live market rates, and nothing else.
 - `/app/funds/[key]` holds the steps eligibility → approve → subscribe, plus redeem request and cancel.
 - `/app/portfolio` shows holdings read from contracts and receipts read from chain events.
-- `/app/stocks` shows Pyth prices and an order preview. The order button stays disabled until a partner exists.
+- `/app/stocks` shows live CoinGecko xStocks prices and an order preview. The order button stays disabled until a partner exists.
 - The first `/app` visit shows the disclaimer gate: a checkbox, then “Agree and continue”. It is stored as `splashz.disclaimer.v1`.
 
 ## Visual system (`web/src/app/globals.css`)
