@@ -1,0 +1,17 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.next/
+out/
+artifacts/
+cache/
+typechain-types/
+coverage/
+coverage.json
+contracts/deployments/hardhat.json
+contracts/deployments/localhost.json
+web/src/config/deployment.hardhat.json
+web/src/config/deployment.localhost.json
+*.log
+.DS_Store

@@ -1,0 +1,11 @@
+{
+  "network": "bscTestnet",
+  "chainId": 97,
+  "deployedAt": null,
+  "deployBlock": 0,
+  "roles": null,
+  "stable": "0x0000000000000000000000000000000000000000",
+  "registry": "0x0000000000000000000000000000000000000000",
+  "vault": "0x0000000000000000000000000000000000000000",
+  "funds": []
+}
