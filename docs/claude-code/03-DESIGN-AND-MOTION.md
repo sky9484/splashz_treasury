@@ -50,7 +50,7 @@ Tokens live on `:root` and `[data-theme="…"]`. The default is set by `NEXT_PUB
 
 | Theme | Primary | Paper | Character |
 |---|---|---|---|
-| `cobalt` (default) | #1F3FD6 | #F3F2EE warm | Editorial, closest to Stablecorp DNA |
+| `cobalt` (**chosen**, default) | #1F3FD6 | #F3F2EE warm | Editorial, closest to Stablecorp DNA |
 | `midnight` | #2A5BFF | #EEF1F7 cool | Institutional: navy rail and landing hero, navy proof band |
 | `azure` | #0A84FF | #F5F8FB airy | Consumer-friendly: white rail, azure gradient accents |
 

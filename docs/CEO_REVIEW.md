@@ -21,7 +21,7 @@
 | D7 | Stock prices | **On-chain price of record from Atlas** (CoinMarketCap-backed successor to Binance Oracle) on BNB Chain mainnet; **CoinGecko as off-chain witness**; >2% disagreement pauses quotes. Order button disabled. | Approved by Sky (26 Nov) |
 | D8 | Receipts | Read from chain events, chunked RPC scan (~1 day) | Default; Etherscan V2 indexing deferred |
 | D9 | Hosting | Sebastian publishes to earn.splashz.xyz, not Vercel | Approved by Sky |
-| D10 | Theme | Blue family. Cobalt default; Midnight and Azure previewed | **Unresolved**: Sky to pick |
+| D10 | Theme | **Cobalt** (#1F3FD6 on warm paper #F3F2EE). Midnight and Azure tokens kept as unused alternates | Approved by Sky (26 Nov, 18:44) |
 | D11 | Motion | CSS-only, 120/200/320ms, reveal + number flash + modal; reduced-motion off | Approved by Sky (26 Nov) |
 | D12 | Logo | Sky's S-mark, vectorised to `web/public/brand/splashz-white.svg`, white on a `--primary` tile; also the favicon | Supplied by Sky (26 Nov) |
 

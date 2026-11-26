@@ -69,6 +69,6 @@ The official `data-seed-prebsc…bnbchain.org` RPCs **reject browser requests**,
 
 ## Themes
 
-Default is cobalt. Two green previews exist as tokens only: `<html data-theme="splash">` (Splash teal-green, cream, gold) and `data-theme="emerald"`. Not switched on until chosen.
+**Cobalt is the chosen theme** (Sky, 26 Nov). Alternate tokens (`midnight`, `azure`, `splash`, `emerald`) exist in `globals.css` but are not used.
 
 Build with Claude Code using `docs/claude-code/` (six prompts, run in order). See `docs/QA_REPORT.md` for what was and was not tested.
