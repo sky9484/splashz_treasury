@@ -30,5 +30,5 @@ Open decisions (prompts use the defaults until Sky changes them):
 | Decision | Default in prompts | Options |
 |---|---|---|
 | Colour theme | `cobalt` (current) | `cobalt`, `midnight`, `azure` (tokens exist; one-line switch) |
-| Logo | Placeholder wave mark | Sky's new white Splashz logo (file not yet supplied) |
+| Logo | Sky's S-mark (done) | n/a |
 | Testnet RPC on demo day | publicnode → drpc | Private RPC via `NEXT_PUBLIC_BSC_TESTNET_RPC` |

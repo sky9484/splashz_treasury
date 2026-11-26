@@ -23,7 +23,7 @@
 | D9 | Hosting | Sebastian publishes to earn.splashz.xyz, not Vercel | Approved by Sky |
 | D10 | Theme | Blue family. Cobalt default; Midnight and Azure previewed | **Unresolved**: Sky to pick |
 | D11 | Motion | CSS-only, 120/200/320ms, reveal + number flash + modal; reduced-motion off | Approved by Sky (26 Nov) |
-| D12 | Logo | Placeholder mark; slot ready for Sky's white Splashz logo | **Unresolved**: file not yet supplied |
+| D12 | Logo | Sky's S-mark, vectorised to `web/public/brand/splashz-white.svg`, white on a `--primary` tile; also the favicon | Supplied by Sky (26 Nov) |
 
 ## Architecture
 
