@@ -17,7 +17,7 @@ docs/        CEO review, build prompt, QA report
 | Stablecoin vault | Real ERC-4626 on testnet. A keeper copies the **live Venus USDT APY** from DefiLlama on-chain and pays matching test yield. |
 | Live market rates | Real mainnet data from DefiLlama: Venus USDT/USDC, Lista USD1, Aave V3 USDT (BNB Chain), Aave V3 USDC/USDT (Ethereum). Pool ids verified live 26 Nov. |
 | Live prices + chain | BNB, USDT, USDC and tokenized stocks (xStocks) from CoinGecko; testnet block and gas straight from BSC testnet. Keyless. |
-| Tokenized stocks | Live 24/7 xStocks prices. Buying is **disabled** until a licensed tokenizer partner is signed. |
+| Tokenized stocks | **On-chain price of record from Atlas oracle** (BNB Chain mainnet), cross-checked against CoinGecko; >2% gap pauses quotes. Buying is **disabled** until a licensed tokenizer partner is signed. |
 | Receipts | Read from contract events on-chain (no database). |
 | Wallet | MetaMask only (EIP-6963 `io.metamask`), chain 97. The app is gated until a wallet connects. |
 
@@ -60,7 +60,8 @@ Every feed tries our server route first (cached), then calls the public API stra
 | Feed | Server route | Browser fallback |
 |---|---|---|
 | Vault APYs | `/api/yields` | `yields.llama.fi/chart/{pool}` |
-| Stocks | `/api/stocks` | `api.coingecko.com/simple/price` |
+| Stocks (record) | n/a | Atlas SingleFeeds via `bsc-rpc.publicnode.com` → `bsc.drpc.org` (direct eth_call, never multicall) |
+| Stocks (witness) | `/api/stocks` | `api.coingecko.com/simple/price` |
 | BNB / USDT / USDC | `/api/market` | same |
 | Block, gas, contract reads | n/a | `bsc-testnet-rpc.publicnode.com`, then `bsc-testnet.drpc.org` |
 
@@ -70,4 +71,4 @@ The official `data-seed-prebsc…bnbchain.org` RPCs **reject browser requests**,
 
 Default is cobalt. Two green previews exist as tokens only: `<html data-theme="splash">` (Splash teal-green, cream, gold) and `data-theme="emerald"`. Not switched on until chosen.
 
-See `docs/QA_REPORT.md` for what was and was not tested.
+Build with Claude Code using `docs/claude-code/` (six prompts, run in order). See `docs/QA_REPORT.md` for what was and was not tested.

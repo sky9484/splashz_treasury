@@ -4,6 +4,7 @@ import { Arrow } from "@/components/Arrow";
 import { HeroCard } from "@/components/landing/HeroCard";
 import { LiveTicker } from "@/components/landing/LiveTicker";
 import { LiveStrip } from "@/components/LiveStrip";
+import { Reveal } from "@/components/motion";
 
 function LaunchApp({ big = false }: { big?: boolean }) {
   return (
@@ -100,17 +101,19 @@ export default function Landing() {
 
       <section id="products" className="lsec" style={{ borderTop: 0 }}>
         <div className="wrap">
-          <div className="eyebrow">Products</div>
-          <h2>Three ways to earn. One wallet.</h2>
+          <Reveal>
+            <div className="eyebrow">Products</div>
+            <h2>Three ways to earn. One wallet.</h2>
+          </Reveal>
           <p className="sub">Pick what fits the money you have sitting still, and see exactly where it goes before you sign anything.</p>
           <div className="products">
-            {PRODUCTS.map((p) => (
-              <article key={p.title}>
+            {PRODUCTS.map((p, i) => (
+              <Reveal as="article" i={i} key={p.title}>
                 <span className={`tag ${p.tag[1]}`} style={{ alignSelf: "flex-start" }}>{p.tag[0]}</span>
                 <h3 style={{ fontSize: 24 }}>{p.title}</h3>
                 <p className="muted small" style={{ margin: 0, lineHeight: 1.6 }}>{p.body}</p>
                 <ul>{p.points.map((x) => <li key={x}>{x}</li>)}</ul>
-              </article>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -118,15 +121,17 @@ export default function Landing() {
 
       <section id="how" className="lsec" style={{ background: "var(--ground-2)" }}>
         <div className="wrap">
-          <div className="eyebrow">How it works</div>
-          <h2>From connect to units in your wallet, in four steps.</h2>
+          <Reveal>
+            <div className="eyebrow">How it works</div>
+            <h2>From connect to units in your wallet, in four steps.</h2>
+          </Reveal>
           <ol className="flow" style={{ padding: 0 }}>
             {FLOW.map(([t, d], i) => (
-              <li key={t}>
+              <Reveal as="li" i={i} key={t}>
                 <span className="n">0{i + 1}</span>
                 <h3>{t}</h3>
                 <p className="muted small" style={{ margin: 0, lineHeight: 1.6 }}>{d}</p>
-              </li>
+              </Reveal>
             ))}
           </ol>
         </div>
@@ -134,12 +139,14 @@ export default function Landing() {
 
       <section id="why" className="lsec">
         <div className="wrap">
-          <div className="eyebrow">Why Splashz</div>
-          <h2>The yield of a fund. The control of a wallet.</h2>
+          <Reveal>
+            <div className="eyebrow">Why Splashz</div>
+            <h2>The yield of a fund. The control of a wallet.</h2>
+          </Reveal>
           <p className="sub">Most yield apps ask you to hand over your stablecoins. We route them to licensed managers and on-chain markets, and the receipt comes back to you.</p>
           <div className="feat">
-            {WHY.map(([t, d]) => (
-              <div key={t}><h3>{t}</h3><p>{d}</p></div>
+            {WHY.map(([t, d], i) => (
+              <Reveal key={t} i={i % 3}><h3>{t}</h3><p>{d}</p></Reveal>
             ))}
           </div>
         </div>
@@ -147,7 +154,7 @@ export default function Landing() {
 
       <section className="lsec" style={{ paddingTop: 0, borderTop: 0 }}>
         <div className="wrap">
-          <div className="panel dark" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 40, padding: 44 }}>
+          <Reveal className="panel dark" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 40, padding: 44 }}>
             <div>
               <div className="eyebrow" style={{ color: "var(--gold)" }}>Proof</div>
               <h2 style={{ marginTop: 14 }}>Every step is a contract event you can open.</h2>
@@ -163,7 +170,7 @@ export default function Landing() {
               <div style={{ color: "var(--gold)", marginTop: 6 }}>event RedemptionRequested(…)</div>
               <div style={{ color: "var(--gold)" }}>event RedemptionSettled(…)</div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -183,7 +190,7 @@ export default function Landing() {
 
       <section className="lsec" style={{ paddingTop: 0, borderTop: 0 }}>
         <div className="wrap">
-          <div className="panel blue" style={{ padding: "56px 48px", display: "flex", flexWrap: "wrap", gap: 24, justifyContent: "space-between", alignItems: "flex-end" }}>
+          <Reveal className="panel blue" style={{ padding: "56px 48px", display: "flex", flexWrap: "wrap", gap: 24, justifyContent: "space-between", alignItems: "flex-end" }}>
             <div>
               <div className="eyebrow" style={{ color: "rgba(255,255,255,0.75)" }}>Ready</div>
               <h2 style={{ color: "#fff", fontSize: 40, marginTop: 12, maxWidth: 560 }}>Connect a wallet and try the full flow on testnet.</h2>
@@ -191,7 +198,7 @@ export default function Landing() {
             <Link href="/app" className="btn" style={{ background: "#fff", color: "var(--primary)", padding: "12px 24px" }}>
               <span className="ico" style={{ background: "var(--primary-soft)" }}><Arrow /></span>Launch app
             </Link>
-          </div>
+          </Reveal>
         </div>
       </section>
 

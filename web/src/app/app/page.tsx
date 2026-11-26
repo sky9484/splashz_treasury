@@ -8,6 +8,7 @@ import { useFunds } from "@/lib/useFunds";
 import { deployment, isDeployed } from "@/lib/deployment";
 import { erc20Abi, vaultAbi } from "@/lib/abi";
 import { ago, fmtAmount } from "@/lib/format";
+import { Reveal } from "@/components/motion";
 
 export default function EarnPage() {
   const { address } = useAccount();
@@ -37,7 +38,7 @@ export default function EarnPage() {
         </div>
       </div>
 
-      <div className="grid3 cells">
+      <Reveal i={0} className="grid3 cells">
         <div className="stat dark" style={{ background: "var(--ink)", color: "#fff" }}>
           <div className="label">Test USDT in your wallet</div>
           <div className="value">{address ? fmtAmount(wallet) : "—"}</div>
@@ -53,9 +54,9 @@ export default function EarnPage() {
           <div className="value">{address ? fmtAmount(vaultVal) : "—"}</div>
           <div className="xs" style={{ color: "var(--amber)", marginTop: 10 }}>Vault shares in your wallet</div>
         </div>
-      </div>
+      </Reveal>
 
-      <section className="panel">
+      <Reveal as="section" i={1} className="panel">
         <div className="sechead">
           <div>
             <h2>Funds and bonds</h2>
@@ -84,9 +85,9 @@ export default function EarnPage() {
             );
           })}
         </div>
-      </section>
+      </Reveal>
 
-      <section className="panel">
+      <Reveal as="section" i={2} className="panel">
         <div className="sechead">
           <div>
             <h2>Stablecoin vault</h2>
@@ -95,15 +96,15 @@ export default function EarnPage() {
         </div>
         <VaultPanel />
         <LiveMarkets />
-      </section>
+      </Reveal>
 
-      <section className="panel blue" style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center", justifyContent: "space-between" }}>
+      <Reveal as="section" i={3} className="panel blue" style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ maxWidth: 640 }}>
           <h2 style={{ color: "#fff" }}>Tokenized stocks</h2>
           <p style={{ margin: "6px 0 0", color: "rgba(255,255,255,0.78)", lineHeight: 1.6 }}>Live 24/7 prices for tokenized US stocks, ready to buy with USDT once a licensed tokenizer partner is connected.</p>
         </div>
         <Link href="/app/stocks" className="btn" style={{ background: "#fff", color: "var(--primary)" }}>Open Stocks</Link>
-      </section>
+      </Reveal>
     </>
   );
 }

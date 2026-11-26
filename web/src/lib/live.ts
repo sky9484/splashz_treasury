@@ -2,6 +2,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { MARKETS, summarizeChart, unavailable, type MarketYield } from "./yields";
 import { cgSimplePrice, parseAssets, parseStocks, STOCKS, ASSETS, type Quote } from "./stocks";
+import { createPublicClient, fallback as viemFallback, http as viemHttp } from "viem";
+import { bsc } from "viem/chains";
+import { ATLAS_FEEDS, BSC_MAINNET_RPCS, aggregatorV3Abi, decodeRound, type OnchainPrice } from "./atlas";
+
 
 /**
  * Every live feed tries our server route first (cached, keeps API keys server-side), then the
@@ -65,3 +69,28 @@ export const useStocks = () =>
   useQuery({ queryKey: ["stocks"], queryFn: () => loadPrices("/api/stocks", STOCKS.map((s) => s.cg), parseStocks), refetchInterval: 60_000 });
 export const useAssets = () =>
   useQuery({ queryKey: ["assets"], queryFn: () => loadPrices("/api/market", ASSETS.map((a) => a.cg), parseAssets), refetchInterval: 60_000 });
+
+/* ---------- On-chain stock prices: Atlas on BNB Chain mainnet, read directly by the browser ---------- */
+
+// JSON-RPC batching groups the eth_calls into one HTTP request, but each stays a direct call to the feed.
+// Do NOT enable `batch.multicall`: Atlas whitelist-mode feeds refuse reads that come through a contract.
+const mainnet = createPublicClient({
+  chain: bsc,
+  transport: viemFallback(BSC_MAINNET_RPCS.map((u) => viemHttp(u, { batch: true, timeout: 8_000 }))),
+});
+
+export async function loadOnchainStocks(): Promise<OnchainPrice[]> {
+  const t = now();
+  return Promise.all(
+    Object.entries(ATLAS_FEEDS).map(async ([ticker, f]) => {
+      try {
+        const raw = await mainnet.readContract({ address: f.feed, abi: aggregatorV3Abi, functionName: "latestRoundData" });
+        return decodeRound(ticker, raw, t);
+      } catch {
+        return decodeRound(ticker, null, t);
+      }
+    }),
+  );
+}
+
+export const useOnchainStocks = () => useQuery({ queryKey: ["atlas"], queryFn: loadOnchainStocks, refetchInterval: 30_000 });

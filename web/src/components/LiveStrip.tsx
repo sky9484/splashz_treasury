@@ -3,6 +3,7 @@ import { useBlockNumber, useGasPrice } from "wagmi";
 import { formatGwei } from "viem";
 import { useAssets } from "@/lib/live";
 import { CHAIN } from "@/lib/wagmi";
+import { Flash } from "./motion";
 
 /** One line of live context: market prices from CoinGecko, chain state straight from BSC testnet. */
 export function LiveStrip() {
@@ -21,7 +22,7 @@ export function LiveStrip() {
   const price = (t: string, d = 2) => {
     const x = q(t);
     if (assets.isLoading) return <span className="skeleton" style={{ width: 50 }} />;
-    return x?.price != null ? `$${x.price.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d })}` : "unavailable";
+    return x?.price != null ? <Flash value={x.price}>{`$${x.price.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d })}`}</Flash> : "unavailable";
   };
   return (
     <div className="strip" aria-label="Live market and network data">

@@ -18,9 +18,12 @@
 | D4 | Visual DNA | Stablecorp-style editorial system (sharp containers, long soft shadow, tracked pills) with Splashz cobalt and BNB gold; own layout | Approved by Sky (26 Nov) |
 | D5 | Fund NAV | Demo NAV signed by the deploy team, labelled “not real fund data” | Default; real NAV needs a manager agreement |
 | D6 | Vault yield | Mirrors live Venus USDT APY via keeper; testnet yield is minted | Default; disclosed in UI |
-| D7 | Stocks | Live CoinGecko xStocks prices (Pyth needs a paid key), order button disabled | Default; tokenized stocks are securities |
+| D7 | Stock prices | **On-chain price of record from Atlas** (CoinMarketCap-backed successor to Binance Oracle) on BNB Chain mainnet; **CoinGecko as off-chain witness**; >2% disagreement pauses quotes. Order button disabled. | Approved by Sky (26 Nov) |
 | D8 | Receipts | Read from chain events, chunked RPC scan (~1 day) | Default; Etherscan V2 indexing deferred |
 | D9 | Hosting | Sebastian publishes to earn.splashz.xyz, not Vercel | Approved by Sky |
+| D10 | Theme | Blue family. Cobalt default; Midnight and Azure previewed | **Unresolved**: Sky to pick |
+| D11 | Motion | CSS-only, 120/200/320ms, reveal + number flash + modal; reduced-motion off | Approved by Sky (26 Nov) |
+| D12 | Logo | Placeholder mark; slot ready for Sky's white Splashz logo | **Unresolved**: file not yet supplied |
 
 ## Architecture
 
@@ -51,10 +54,20 @@ Single points of failure: the manager key (NAV), the trustee key (settlement liq
 | Not eligible | New wallet | `NotEligible` revert; UI shows step 1 | “Confirm eligibility” | Contract test ✔ |
 | DefiLlama down | Network or API error | Route returns `unavailable` per market | “Unavailable”, never a number | Unit test ✔, live call not tested |
 | Price API down | CoinGecko unreachable or rate-limited | Server route, then browser direct, then `unavailable` | Dashes + warning | Fixture E2E ✔ |
+| Atlas feed stale | No update for more than 6 h (holiday, oracle outage) | `decodeRound` marks stale; reconcile → `offchain-only` | "No on-chain" tag; quotes paused | Unit ✔ |
+| Atlas vs CoinGecko disagree | Depeg, bad tick, or manipulation of either | `reconcile` > 2% → `disagree` | "Disagree" tag; quotes paused | Unit ✔ |
+| Atlas refuses read | Whitelist mode and the call came via a contract | Never use multicall; direct eth_call only | n/a | Grep check in prompt 02 |
+| Mainnet RPC down | publicnode outage | viem fallback → drpc | Dashes if both fail | Not tested |
 | RPC log-range limit | Public RPC caps `getLogs` | 5k-block chunks, 40 chunks | Receipts for about a day | Not tested (no RPC in sandbox) |
 | Wrong network | Wallet on another chain | NetworkGuard prompts a switch | Banner + “Switch network” | Not E2E-tested |
 | Wallet hangs on reconnect | Locked MetaMask | 1.5 s patience, then gate | Gate, not an endless skeleton | Browser test ✔ |
 | Contracts not deployed | Placeholder config | `isDeployed` false | Amber banner; live data still works | Browser test ✔ |
+
+## Oracle trust note (new)
+
+Atlas is the right price of record on BNB Chain: it is the oracle Venus and Lista use in production, and it succeeded Binance Oracle. Two limits matter:
+1. **Whitelist mode.** Our future *contracts* cannot read most feeds until Atlas whitelists them. Ask Atlas for whitelisting, or a dedicated SingleFeed, before any on-chain stock product ships.
+2. **bStocks ≠ xStocks.** The witness prices a different token on the same underlying. A persistent gap would be a real premium or discount, not an error. Monitor the gap; don't hide it.
 
 ## Not in scope (deferred, with reasons)
 

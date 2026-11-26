@@ -1,6 +1,7 @@
 "use client";
 import { ago, fmtPct, fmtUsdCompact } from "@/lib/format";
 import { useYields as useMarkets } from "@/lib/live";
+import { Flash } from "./motion";
 
 export { useYields as useMarkets } from "@/lib/live";
 
@@ -30,7 +31,7 @@ export function LiveMarkets({ title = "Live mainnet markets" }: { title?: string
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
                   <div>
                     <div className="xs muted">Supply APY now</div>
-                    <div className="apy">{fmtPct(m.apy)}</div>
+                    <div className="apy"><Flash value={m.apy}>{fmtPct(m.apy)}</Flash></div>
                   </div>
                   <div style={{ textAlign: "right" }} className="xs muted">
                     <div>30-day avg {fmtPct(m.apy30d)}</div>

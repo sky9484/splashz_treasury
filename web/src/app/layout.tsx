@@ -17,6 +17,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         {/* Cabinet Grotesk + Satoshi, free from Indian Type Foundry via Fontshare */}
         <link rel="preconnect" href="https://api.fontshare.com" />
+        <noscript><style>{`.reveal{opacity:1!important;transform:none!important}`}</style></noscript>
         <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
       </head>
       <body>
