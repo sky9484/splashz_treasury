@@ -15,7 +15,8 @@ subtask(TASK_COMPILE_SOLIDITY_GET_SOLC_BUILD, async (args: { solcVersion: string
     compilerPath: require.resolve("solc/soljson.js"),
     isSolcJs: true,
     version: args.solcVersion,
-    longVersion: solc.version(),
+    // BscScan lists "0.8.24+commit.e11b9ed9"; solc-js reports the same build with ".Emscripten.clang".
+    longVersion: String(solc.version()).replace(/\.Emscripten\.clang$/, ""),
   };
 });
 

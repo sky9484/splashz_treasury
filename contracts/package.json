@@ -9,7 +9,9 @@
     "deploy:local": "hardhat run scripts/deploy.ts",
     "deploy:testnet": "hardhat run scripts/deploy.ts --network bscTestnet",
     "post-nav": "hardhat run scripts/post-nav.ts --network bscTestnet",
-    "keeper": "hardhat run scripts/keeper.ts --network bscTestnet"
+    "keeper": "hardhat run scripts/keeper.ts --network bscTestnet",
+    "settle": "hardhat run scripts/settle.ts --network bscTestnet",
+    "verify:testnet": "hardhat run scripts/verify.ts --network bscTestnet"
   },
   "keywords": [],
   "author": "",

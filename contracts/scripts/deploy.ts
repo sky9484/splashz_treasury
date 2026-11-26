@@ -28,22 +28,34 @@ async function main() {
   const feeBps = Number(process.env.FEE_BPS || 25);
   console.log(`network=${network.name} deployer=${deployer.address}`);
 
+  // Constructor args of every contract, so scripts/verify.ts can verify without guessing.
+  type VerifyArg = string | number | boolean;
+  const verify: { name: string; contract: string; address: string; args: VerifyArg[] }[] = [];
+  const record = async (name: string, file: string, c: { getAddress(): Promise<string> }, args: VerifyArg[]) =>
+    verify.push({ name, contract: `contracts/${file}.sol:${file}`, address: await c.getAddress(), args });
+
   const usdt = await (await ethers.getContractFactory("MockUSDT")).deploy(deployer.address);
   await usdt.waitForDeployment();
+  await record("MockUSDT", "MockUSDT", usdt, [deployer.address]);
   const registry = await (await ethers.getContractFactory("InvestorRegistry")).deploy(deployer.address, true);
   await registry.waitForDeployment();
+  await record("InvestorRegistry", "InvestorRegistry", registry, [deployer.address, true]);
 
   const funds: Record<string, unknown>[] = [];
   for (const f of FUNDS) {
     const share = await (await ethers.getContractFactory("FundShare")).deploy(f.name, f.symbol, await registry.getAddress(), deployer.address);
     await share.waitForDeployment();
+    await record(`FundShare ${f.key}`, "FundShare", share, [f.name, f.symbol, await registry.getAddress(), deployer.address]);
     const oracle = await (await ethers.getContractFactory("NavOracle")).deploy(deployer.address, manager, 7 * 24 * 3600, 500);
     await oracle.waitForDeployment();
-    const router = await (await ethers.getContractFactory("SubscriptionRouter")).deploy(
+    await record(`NavOracle ${f.key}`, "NavOracle", oracle, [deployer.address, manager, 7 * 24 * 3600, 500]);
+    const routerArgs = [
       await usdt.getAddress(), await share.getAddress(), await oracle.getAddress(), await registry.getAddress(),
       trustee, feeRecipient, feeBps, deployer.address,
-    );
+    ] as const;
+    const router = await (await ethers.getContractFactory("SubscriptionRouter")).deploy(...routerArgs);
     await router.waitForDeployment();
+    await record(`SubscriptionRouter ${f.key}`, "SubscriptionRouter", router, [...routerArgs]);
     await (await share.grantRole(await share.ROUTER_ROLE(), await router.getAddress())).wait();
 
     // First NAV: only possible here when the deployer is also the manager. Otherwise run scripts/post-nav.ts.
@@ -64,17 +76,20 @@ async function main() {
 
   const vault = await (await ethers.getContractFactory("StableVault")).deploy(await usdt.getAddress(), deployer.address, deployer.address);
   await vault.waitForDeployment();
+  await record("StableVault", "StableVault", vault, [await usdt.getAddress(), deployer.address, deployer.address]);
 
   const out = {
     network: network.name,
     chainId: Number((await ethers.provider.getNetwork()).chainId),
     deployedAt: new Date().toISOString(),
     deployBlock,
+    explorer: "https://testnet.bscscan.com",
     roles: { deployer: deployer.address, manager, trustee, feeRecipient, feeBps },
     stable: await usdt.getAddress(),
     registry: await registry.getAddress(),
     vault: await vault.getAddress(),
     funds,
+    verify,
   };
   const dir = path.join(__dirname, "..", "deployments");
   fs.mkdirSync(dir, { recursive: true });

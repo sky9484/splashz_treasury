@@ -29,24 +29,26 @@ You need: Node 20+, a deployer key with tBNB (BNB Chain testnet faucet), and opt
 # 1. Contracts
 cd contracts
 npm ci --legacy-peer-deps
-cp .env.example .env          # fill DEPLOYER_PRIVATE_KEY (never commit .env)
-npm test                      # 14 passing
-npm run deploy:testnet        # writes deployments/bscTestnet.json and web/src/config/deployment.bscTestnet.json
+cp .env.example .env          # fill DEPLOYER_PRIVATE_KEY and ETHERSCAN_API_KEY (never commit .env)
+npm test                      # 21 passing (14 behaviour + 7 invariant/fuzz)
+```
 
-# 2. Verify on BscScan (optional, repeat per contract)
-npx hardhat verify --network bscTestnet <address> <constructor args…>
+Then run these in order, all against BSC testnet:
 
-# 3. Fresh NAV (oracle rejects NAVs older than 7 days, orders pause when stale)
-FUND=money-market NAV=1.0004 npm run post-nav
+| Step | Command | What it does |
+|---|---|---|
+| 1 | `npm run deploy:testnet` | Deploys all 12 contracts and writes `deployments/bscTestnet.json` and `web/src/config/deployment.bscTestnet.json` (addresses, `deployBlock`, `explorer`, constructor args). |
+| 2 | `npm run verify:testnet` | Verifies every contract on BscScan from the `verify` block in the deployment file. Skips ones already verified. |
+| 3 | `FUND=money-market NAV=1.0004 npm run post-nav` | Signs and posts a fresh NAV for one fund. Repeat per fund. Orders pause when a NAV is older than 7 days, so run it daily. |
+| 4 | `npm run keeper` | Copies the live Venus USDT APY on-chain and pays one hour of yield into the vault. Run it hourly from cron. |
+| 5 | `ORDER=0x… FUND=money-market npm run settle` | The trustee approves the payout and settles one pending redemption at the current NAV. Prints the payout. |
 
-# 4. Keeper (hourly cron): copies live Venus USDT APY on-chain and pays the yield
-npm run keeper
-
-# 5. Web
+```bash
+# Web
 cd ../web
 npm ci --legacy-peer-deps
 cp .env.example .env.local    # all optional; COINGECKO_API_KEY (free demo key) raises rate limits
-npm run build && npm start    # or deploy the Next.js app to earn.splashz.xyz
+npm run build && npm start    # serve on earn.splashz.xyz
 ```
 
 Commit the generated `web/src/config/deployment.bscTestnet.json` after deploying so the site points at the new contracts.
