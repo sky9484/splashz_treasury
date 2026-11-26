@@ -10,6 +10,7 @@ Six prompts. Run them **in order, one Claude Code session each**, from the repo 
 | 3 | `03-DESIGN-AND-MOTION.md` | Tokens, themes, components, motion system | 1 session |
 | 4 | `04-PAGES-AND-FLOWS.md` | Landing, wallet gate, dashboard, fund, portfolio, stocks | 1–2 sessions |
 | 5 | `05-QA-AND-RELEASE.md` | Tests, browser E2E, deploy checklist, QA report | 1 session |
+| 6 | `06-FUND-DETAILS-AND-FIXES.md` | Fund details page before investing; review fixes; trustee approvals | 1 session (before Demo Night) |
 
 ## How to paste
 
